@@ -1,0 +1,93 @@
+<?php
+/**
+*implementacion de modulo
+*/
+function imp_menu(){
+$items['imp']=array(
+'title'=>'Indicador De Produccion Electrica',
+'description'=>'Imprecion de Indicador',
+'page callback'=>'indicadores',
+'type'=>MENU_NORMAL_ITEM,
+'access callback'=>TRUE,
+);
+return $items;
+}
+function indicadores(){
+$resultado=drupal_http_request("http://api.worldbank.org/countries/COL/indicators/EG.ELC.PROD.KH?per_page=10&date=2003:2007");
+//imprime a lo largo
+
+//print "<pre>";
+
+if ($resultado->code==200)
+{
+$datos==$resultado->data;
+
+//if(is_array($datos))
+//{
+//print "<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World'/>";
+//}
+
+//lo de abajo impime la imagen
+//print "<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World'/>";
+
+}
+
+$hola=simplexml_load_string($resultado->data);
+
+$cam=0;
+foreach($hola->children('http://www.worldbank.org')->data as $dato)
+{
+
+
+$fecha=$dato->date;
+$indica=$dato->indicator;
+$sitio=$dato->country;
+$valor=$dato->value;
+//print $indica;
+//print "\t";
+//print $sitio;
+//print "\t";
+//print $fecha;
+//print "\t";
+//print $valor;
+//print "\n";
+
+if($cam==0)
+{
+$cad=$cad.$fecha;
+$cad2=$cad2.$valor;
+}
+
+if($cam>0)
+{
+$cad=$cad.'|'.$fecha;
+$cad2=$cad2.','.$valor;
+}
+
+$cam=$cam+1;
+
+
+
+}
+//print "<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=$indica|World'/>";
+//print $cad;
+//print $cad2;
+
+//print "<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:$cad2&chs=500x200&chl=$cad&chtt=Diagrama+Circular+(PiE)'/>";
+//print "<img src='http://chart.apis.google.com/chart?cht=bvs&chd=t:$cad2&chs=600x400&chl=$cad&chco=FFC6A5|FFF42|DEF3BD&chtt=Diagrama+De+Barras&chds=0,60000000000&chxt=x,y&chxr=0,0,10000|1,0,60000000000,5000000000'/>";
+
+$gra="<img src='http://chart.apis.google.com/chart?cht=p3&chd=t:$cad2&chs=500x200&chl=$cad&chtt=Diagrama+Circular+(PiE)'/>"."<img src='http://chart.apis.google.com/chart?cht=bvs&chd=t:$cad2&chs=500x300&chl=$cad&chco=FFC6A5|FFF42|DEF3BD&chtt=Diagrama+De+Barras&chds=0,60000000000&chxt=x,y&chxr=0,0,10000|1,0,60000000000,5000000000'/>";
+
+
+return ($gra);
+
+//return print_r($resultado);
+//print "</pre>";
+
+//return "<img sr="url de la grafica">";
+
+}
+
+
+
+
