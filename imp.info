@@ -1,5 +1,13 @@
-; $Id $
-name = imprecion
-description = servivo para imp
-version=6.x.0.1
-core=6.x
+Git es un software de sistema de control de versiones 
+
+
+diseñado por Linus Torvalds, pensando en la eficiencia 
+
+
+y la confiabilidad del mantenimiento de versiones de 
+
+
+aplicaciones cuando estas tienen un gran número 
+
+
+archivos de código fuente. ...
